@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+#import and connect
+
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from PyQt5 import QtSql
 import mysql.connector
 import sys
 
@@ -6,112 +12,41 @@ mydb = mysql.connector.connect(
   host="localhost",
   user="root",
   passwd="root",
-  database="veritabani"#eğer yeni database oluşturmayacaksan bağlan
+  database="db1"#eğer yeni database oluşturmayacaksan bağlan
 )
 
-cursor = mydb.cursor()
+print(mydb)
 
-#%%Tabloların oluşturulması
+#%%Create db
 
-cursor.execute("drop table if exists tedarikci")
-cursor.execute("drop table if exists tedarikci_hammadde")
-cursor.execute("drop table if exists uretici")
-cursor.execute("drop table if exists stok_hammadde")
-cursor.execute("drop table if exists stok_urun")
-cursor.execute("drop table if exists bilesenler")
-cursor.execute("drop table if exists musteri")
-cursor.execute("drop table if exists musteri_urun")
+mycursor = mydb.cursor()
 
-cursor.execute("create table tedarikci          (id varchar(10), konum varchar(30), firma_adi varchar(20), primary key(id))")
-cursor.execute("create table tedarikci_hammadde (id varchar(10),tedarikci_id varchar(10) ,miktar int,uretim_tarihi varchar(10),raf_omru int,satis_fiyati int, primary key(id))")
-cursor.execute("create table uretici            (firma_adi varchar(20),konum varchar(30))")
-cursor.execute("create table stok_hammadde      (id varchar(10),hammadde_ismi varchar(10),alis_maliyeti int,stok_miktar int, primary key(id))")
-cursor.execute("create table stok_urun          (id varchar(10),kimyasal_urun varchar(20),uretim_tarihi varchar(10),raf_omru int,iscilik_maliyeti int, toplam_maliyet int,satis_fiyati int, primary key(id))")
-cursor.execute("create table musteri            (musteri_id varchar(10),musteriAdi varchar(20),adres varchar(50))")
-cursor.execute("create table bilesenler         (stok_urun_id varchar(10),bilesen1 varchar(10),bilesen2 varchar(10),bilesen3 varchar(10))")
-cursor.execute("create table musteri_urun       (musteri_id varchar(10),urun varchar(20))")
+#mycursor.execute("create database db1")
 
-cursor.execute("insert into tedarikci(id,konum,firma_adi) values ('1','konum1','firma1')")
-cursor.execute("insert into tedarikci(id,konum,firma_adi) values ('2','konum2','firma2')")
-cursor.execute("insert into tedarikci(id,konum,firma_adi) values ('3','konum3','firma3')")
+for x in mycursor:
+    print(x)
 
-cursor.execute("insert into tedarikci_hammadde(id,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values ('1','1',2,'01012019',2,300)")
-cursor.execute("insert into tedarikci_hammadde(id,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values ('2','1',8,'01012019',3,200)")
-cursor.execute("insert into tedarikci_hammadde(id,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values ('3','1',3,'01012019',5,400)")
-cursor.execute("insert into tedarikci_hammadde(id,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values ('4','2',5,'01012019',7,150)")
-cursor.execute("insert into tedarikci_hammadde(id,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values ('5','2',7,'01012019',2,300)")
-cursor.execute("insert into tedarikci_hammadde(id,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values ('6','2',8,'01012019',1,250)")
-cursor.execute("insert into tedarikci_hammadde(id,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values ('7','3',2,'01012019',3,450)")
-cursor.execute("insert into tedarikci_hammadde(id,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values ('8','3',8,'01012019',4,150)")
-cursor.execute("insert into tedarikci_hammadde(id,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values ('9','3',1,'01012019',6,200)")
+#%%
+#mycursor.execute("create table tablo1(id int,isim varchar(20),soyisim varchar(20))")
 
-cursor.execute("insert into uretici(firma_adi,konum) values ('Uretici','Istanbul')")
+#%%
+mycursor.execute("insert into tablo1 values(1,'isim1','soyisim1')")
+mycursor.execute("insert into tablo1 values(2,'isim2','soyisim2')")
+mycursor.execute("insert into tablo1 values(3,'isim1','soyisim3')")
+mycursor.execute("insert into tablo1 values(4,'isim1','soyisim4')")
+mycursor.execute("insert into tablo1 values(5,'isim1','soyisim5')")
 
-cursor.execute("insert into stok_hammadde(id,hammadde_ismi,alis_maliyeti,stok_miktar) values (1,'C',300,10)")
+#%%
+mycursor.execute("SELECT * FROM tablo1")
 
-cursor.execute("insert into stok_urun(id,kimyasal_urun,uretim_tarihi,raf_omru,iscilik_maliyeti,toplam_maliyet,satis_fiyati) values ('1','CO2','01012019',3,100,400,500)")
-cursor.execute("insert into stok_urun(id,kimyasal_urun,uretim_tarihi,raf_omru,iscilik_maliyeti,toplam_maliyet,satis_fiyati) values ('2','H2O','01012019',4,250,600,750)")
-cursor.execute("insert into stok_urun(id,kimyasal_urun,uretim_tarihi,raf_omru,iscilik_maliyeti,toplam_maliyet,satis_fiyati) values ('3','NH3','01012019',2,150,500,625)")
+myresult = mycursor.fetchall()
 
-cursor.execute("insert into bilesenler(stok_urun_id,bilesen1,bilesen2,bilesen3) values ('1','C','2O',null)")
-cursor.execute("insert into bilesenler(stok_urun_id,bilesen1,bilesen2,bilesen3) values ('2','2H','O',null)")
-cursor.execute("insert into bilesenler(stok_urun_id,bilesen1,bilesen2,bilesen3) values ('3','N','3H',null)")
+for x in myresult:
+  print(x)
+  
+#%%
+type(myresult)  
 
-cursor.execute("insert into musteri(musteri_id,musteriAdi,adres) values ('1','musteri1','xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')")
-cursor.execute("insert into musteri(musteri_id,musteriAdi,adres) values ('2','musteri2','yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy')")
-cursor.execute("insert into musteri(musteri_id,musteriAdi,adres) values ('3','musteri3','zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')")
-
-cursor.execute("insert into musteri_urun(musteri_id,urun) values ('1','CO2')")
-cursor.execute("insert into musteri_urun(musteri_id,urun) values ('1','H2O')")
-cursor.execute("insert into musteri_urun(musteri_id,urun) values ('1','NH3')")
-cursor.execute("insert into musteri_urun(musteri_id,urun) values ('2','CO2')")
-cursor.execute("insert into musteri_urun(musteri_id,urun) values ('2','H2O')")
-cursor.execute("insert into musteri_urun(musteri_id,urun) values ('2','NH3')")
-cursor.execute("insert into musteri_urun(musteri_id,urun) values ('3','CO2')")
-cursor.execute("insert into musteri_urun(musteri_id,urun) values ('3','H2O')")
-cursor.execute("insert into musteri_urun(musteri_id,urun) values ('3','NH3')")
-
-
-cursor.execute("select * from tedarikci")
-
-sonuc = cursor.fetchall()
-for i in sonuc:
-    print(i)
-
-cursor.execute("select * from tedarikci_hammadde")
-
-sonuc = cursor.fetchall()
-for i in sonuc:
-    print(i)
-
-cursor.execute("select * from uretici")
-
-sonuc = cursor.fetchall()
-for i in sonuc:
-    print(i)
-
-
-cursor.execute("select * from stok_hammadde")
-sonuc = cursor.fetchall()
-for i in sonuc:
-    print(i)
-
-cursor.execute("select * from stok_urun")
-sonuc = cursor.fetchall()
-for i in sonuc:
-    print(i)
-
-cursor.execute("select * from musteri")
-sonuc = cursor.fetchall()
-for i in sonuc:
-    print(i)
-
-cursor.execute("select * from musteri_urun")
-sonuc = cursor.fetchall()
-for i in sonuc:
-    print(i)
-
-
-
-#sonuc = cursor.fetchall()
-
+for i in range(5):
+    j = str(i)
+    print(myresult[i],"->",j)

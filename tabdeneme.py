@@ -32,7 +32,7 @@ class MyTableWidget(QWidget):
         # tab1
         self.tab1.layout = QVBoxLayout(self)
         self.tabloMenu = QComboBox()
-        self.tabloMenu.addItems(["Tedarikçi","Tedarikçi Hammadde","Stok Hammade","Stok Ürün","Müşteri","Boş","Formüller","Uzaklıklar"])
+        self.tabloMenu.addItems(["Tedarikçi","Tedarikçi Hammadde","Stok Hammade","Stok Ürün","Müşteri","Siparişler","Formüller","Uzaklıklar"])
         self.tab1.layout.addWidget(self.tabloMenu)
         self.tableWidget = QTableWidget()
         tedarikci_tablo = vti.getTedarikciTablo()
@@ -41,7 +41,7 @@ class MyTableWidget(QWidget):
         self.tableWidget.setHorizontalHeaderLabels(["Id","Ülke","Şehir","Firma Adı"])
         i = 0
         for j in tedarikci_tablo:
-            self.tableWidget.setItem(i,0,QTableWidgetItem(j[0]))
+            self.tableWidget.setItem(i,0,QTableWidgetItem(str(j[0])))
             self.tableWidget.setItem(i,1,QTableWidgetItem(j[1]))
             self.tableWidget.setItem(i,2,QTableWidgetItem(j[2]))
             self.tableWidget.setItem(i,3,QTableWidgetItem(j[3]))
@@ -145,7 +145,7 @@ class MyTableWidget(QWidget):
             self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)#tablo değiştirilemez
             satirIndex = 0
             for satir in tedarikci_tablo:
-                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(satir[0]))
+                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(str(satir[0])))
                 self.tableWidget.setItem(satirIndex,1,QTableWidgetItem(satir[1]))
                 self.tableWidget.setItem(satirIndex,2,QTableWidgetItem(satir[2]))
                 self.tableWidget.setItem(satirIndex,3,QTableWidgetItem(satir[3]))
@@ -162,9 +162,9 @@ class MyTableWidget(QWidget):
             self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)#tablo değiştirilemez
             satirIndex = 0
             for satir in tedarikci_hammadde_tablo:
-                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(satir[0]))
+                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(str(satir[0])))
                 self.tableWidget.setItem(satirIndex,1,QTableWidgetItem(satir[1]))
-                self.tableWidget.setItem(satirIndex,2,QTableWidgetItem(satir[2]))
+                self.tableWidget.setItem(satirIndex,2,QTableWidgetItem(str(satir[2])))
                 self.tableWidget.setItem(satirIndex,3,QTableWidgetItem(str(satir[3])))
                 self.tableWidget.setItem(satirIndex,4,QTableWidgetItem(str(satir[4])))
                 self.tableWidget.setItem(satirIndex,5,QTableWidgetItem(str(satir[5])))
@@ -182,7 +182,7 @@ class MyTableWidget(QWidget):
             self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)#tablo değiştirilemez
             satirIndex = 0
             for satir in stok_hammadde_tablo:
-                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(satir[0]))
+                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(str(satir[0])))
                 self.tableWidget.setItem(satirIndex,1,QTableWidgetItem(satir[1]))
                 self.tableWidget.setItem(satirIndex,2,QTableWidgetItem(str(satir[2])))
                 self.tableWidget.setItem(satirIndex,3,QTableWidgetItem(str(satir[3])))
@@ -194,18 +194,19 @@ class MyTableWidget(QWidget):
             self.tableWidget = QTableWidget()
             stok_urun_tablo = vti.getStokUrunTablo()
             self.tableWidget.setRowCount(len(stok_urun_tablo))
-            self.tableWidget.setColumnCount(7)
-            self.tableWidget.setHorizontalHeaderLabels(["Id","Kimyasal Ürun","Üretim Tarihi","Raf Ömru","İşçilik Maliyeti","Toplam Maliyet","Satış Fiyati"])
+            self.tableWidget.setColumnCount(8)
+            self.tableWidget.setHorizontalHeaderLabels(["Id","Kimyasal Ürun","Miktar","Üretim Tarihi","Raf Ömru","İşçilik Maliyeti","Toplam Maliyet","Satış Fiyati"])
             self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)#tablo değiştirilemez
             satirIndex = 0
             for satir in stok_urun_tablo:
-                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(satir[0]))
+                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(str(satir[0])))
                 self.tableWidget.setItem(satirIndex,1,QTableWidgetItem(satir[1]))
                 self.tableWidget.setItem(satirIndex,2,QTableWidgetItem(str(satir[2])))
                 self.tableWidget.setItem(satirIndex,3,QTableWidgetItem(str(satir[3])))
                 self.tableWidget.setItem(satirIndex,4,QTableWidgetItem(str(satir[4])))
                 self.tableWidget.setItem(satirIndex,5,QTableWidgetItem(str(satir[5])))
                 self.tableWidget.setItem(satirIndex,6,QTableWidgetItem(str(satir[6])))
+                self.tableWidget.setItem(satirIndex,7,QTableWidgetItem(str(satir[7])))
                 satirIndex += 1
             self.tab1.layout.addWidget(self.tableWidget)
             
@@ -219,7 +220,7 @@ class MyTableWidget(QWidget):
             self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)#tablo değiştirilemez
             satirIndex = 0
             for satir in musteri_tablo:
-                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(satir[0]))
+                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(str(satir[0])))
                 self.tableWidget.setItem(satirIndex,1,QTableWidgetItem(satir[1]))
                 self.tableWidget.setItem(satirIndex,2,QTableWidgetItem(satir[2]))
                 satirIndex += 1
@@ -228,16 +229,19 @@ class MyTableWidget(QWidget):
         elif i == 5:
             self.tab1.layout.removeWidget(self.tableWidget)
             self.tableWidget = QTableWidget()
-#            musteri_urun_tablo = vti.getMusteriUrunTablo()
-#            self.tableWidget.setRowCount(len(musteri_urun_tablo))
-#            self.tableWidget.setColumnCount(2)
-#            self.tableWidget.setHorizontalHeaderLabels(["Müşteri Id", "Ürün"])
-#            self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)#tablo değiştirilemez
-#            satirIndex = 0
-#            for satir in musteri_urun_tablo:
-#                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(satir[0]))
-#                self.tableWidget.setItem(satirIndex,1,QTableWidgetItem(satir[1]))
-#                satirIndex += 1
+            siparis_tablo = vti.getSiparisTablo()
+            self.tableWidget.setRowCount(len(siparis_tablo))
+            self.tableWidget.setColumnCount(5)
+            self.tableWidget.setHorizontalHeaderLabels(["Sipariş Id","Müşteri Id","Sipariş tarihi", "Ürün", "Miktar"])
+            self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)#tablo değiştirilemez
+            satirIndex = 0
+            for satir in siparis_tablo:
+                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(str(satir[0])))
+                self.tableWidget.setItem(satirIndex,1,QTableWidgetItem(str(satir[1])))
+                self.tableWidget.setItem(satirIndex,2,QTableWidgetItem(satir[2]))
+                self.tableWidget.setItem(satirIndex,3,QTableWidgetItem(str(satir[3])))
+                self.tableWidget.setItem(satirIndex,4,QTableWidgetItem(str(satir[4])))       
+                satirIndex += 1
             self.tab1.layout.addWidget(self.tableWidget)
         
         elif i == 6:
@@ -266,7 +270,7 @@ class MyTableWidget(QWidget):
             self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)#tablo değiştirilemez
             satirIndex = 0
             for satir in ulasim_tablo:
-                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(satir[0]))
+                self.tableWidget.setItem(satirIndex,0,QTableWidgetItem(str(satir[0])))
                 self.tableWidget.setItem(satirIndex,1,QTableWidgetItem(satir[1]))
                 self.tableWidget.setItem(satirIndex,2,QTableWidgetItem(satir[2]))
                 self.tableWidget.setItem(satirIndex,3,QTableWidgetItem(str(satir[3])))
@@ -292,7 +296,7 @@ class pencere1(QMainWindow):
         self.line2.move(175,90)
         
         self.label3 = QLabel(self)
-        self.label3.setGeometry(80,160,180,30)
+        self.label3.setGeometry(70,160,250,30)
         
         self.tedarikci_menu = QComboBox(self)
         self.tedarikci_menu.setGeometry(65,190,250,25)
@@ -315,9 +319,10 @@ class pencere1(QMainWindow):
         
         tedarikci_liste = vti.tedarikci_listele(self.hammadde,self.miktar)
         
+        self.tedarikci_menu.clear()
         self.tedarikci_menu.addItems(tedarikci_liste)
         self.tedarikci_menu.setVisible(True)
-        self.label3.setText("Firma\t\tUlaşım Maliyeti\tToplam Maliyet")
+        self.label3.setText("Firma\tUlaşım Maliyeti\tToplam Maliyet")
         self.buton2.setVisible(True)
         self.buton2.clicked.connect(self.tiklandi2)
     
@@ -331,7 +336,7 @@ class pencere1(QMainWindow):
         self.close()
 
         
-class pencere2(QMainWindow):                           
+class pencere2(QMainWindow):                            
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Kimyasal Ürün Üret")
@@ -442,10 +447,10 @@ class pencere2(QMainWindow):
         
         self.c_combo = QComboBox(self)
         self.c_combo.setGeometry(200,145,150,20)
-        
+
         self.h_combo = QComboBox(self)
         self.h_combo.setGeometry(200,170,150,20)
-
+       
         self.o_combo = QComboBox(self)
         self.o_combo.setGeometry(200,195,150,20)
 
@@ -457,6 +462,7 @@ class pencere2(QMainWindow):
         
         self.cl_combo = QComboBox(self)
         self.cl_combo.setGeometry(200,270,150,20)
+
         
         self.buton = QPushButton(self)
         self.buton.setText("Tamam")
@@ -465,18 +471,18 @@ class pencere2(QMainWindow):
         self.buton.clicked.connect(self.tamam)
             
     def miktar_al(self):
-        miktar = int(self.line1.text())
+        self.miktar = int(self.line1.text())
         
-        urun = self.urun_combo.currentText()
+        self.urun = self.urun_combo.currentText()
         
-        elementler = vti.element_miktarlar(urun)
+        elementler = vti.element_miktarlar(self.urun)
         
-        self.c_miktar = int(elementler["C"])*miktar
-        self.h_miktar = int(elementler["H"])*miktar
-        self.o_miktar = int(elementler["O"])*miktar
-        self.n_miktar = int(elementler["N"])*miktar
-        self.s_miktar = int(elementler["S"])*miktar
-        self.cl_miktar = int(elementler["Cl"])*miktar
+        self.c_miktar = int(elementler["C"])*self.miktar
+        self.h_miktar = int(elementler["H"])*self.miktar
+        self.o_miktar = int(elementler["O"])*self.miktar
+        self.n_miktar = int(elementler["N"])*self.miktar
+        self.s_miktar = int(elementler["S"])*self.miktar
+        self.cl_miktar = int(elementler["Cl"])*self.miktar
     
         self.label12.setText(str(self.c_miktar))
         self.label13.setText(str(self.h_miktar))
@@ -489,57 +495,67 @@ class pencere2(QMainWindow):
         self.h_stok = vti.h_stok_liste(self.h_miktar)
         self.o_stok = vti.o_stok_liste(self.o_miktar)
         self.n_stok = vti.n_stok_liste(self.n_miktar)
-        self.s_stok = vti.n_stok_liste(self.s_miktar)
-        self.cl_stok = vti.n_stok_liste(self.cl_miktar)
+        self.s_stok = vti.s_stok_liste(self.s_miktar)
+        self.cl_stok = vti.cl_stok_liste(self.cl_miktar)
         
         self.c_combo.clear()
         self.c_combo.addItems(self.c_stok)
+        self.c_combo.currentIndexChanged.connect(self.hesapla)
+        
         
         self.h_combo.clear()
         self.h_combo.addItems(self.h_stok)
+        self.h_combo.currentIndexChanged.connect(self.hesapla)
         
         self.o_combo.clear()
         self.o_combo.addItems(self.o_stok)
+        self.o_combo.currentIndexChanged.connect(self.hesapla)
         
         self.n_combo.clear()
         self.n_combo.addItems(self.n_stok)
+        self.n_combo.currentIndexChanged.connect(self.hesapla)
         
         self.s_combo.clear()
         self.s_combo.addItems(self.s_stok)
+        self.s_combo.currentIndexChanged.connect(self.hesapla)
         
         self.cl_combo.clear()
         self.cl_combo.addItems(self.cl_stok)
+        self.cl_combo.currentIndexChanged.connect(self.hesapla)
         
-        if self.uretilebiliyor_mu():
-            hammadde_toplam = 0
-            
-            self.buton.setEnabled(True)
-            
-            self.iscilik = vti.imk
-            
-            if self.c_miktar != 0:
-                hammadde_toplam += int(self.c_combo.currentText().split(" | ")[2])*self.c_miktar/int(self.c_combo.currentText().split(" | ")[3])
-            if self.h_miktar != 0:
-                hammadde_toplam += int(self.h_combo.currentText().split(" | ")[2])*self.h_miktar/int(self.h_combo.currentText().split(" | ")[3])
-            if self.o_miktar != 0:
-                hammadde_toplam += int(self.o_combo.currentText().split(" | ")[2])*self.o_miktar/int(self.o_combo.currentText().split(" | ")[3])
-            if self.n_miktar != 0:
-                hammadde_toplam += int(self.n_combo.currentText().split(" | ")[2])*self.n_miktar/int(self.n_combo.currentText().split(" | ")[3])
-            if self.s_miktar != 0:
-                hammadde_toplam += int(self.s_combo.currentText().split(" | ")[2])*self.s_miktar/int(self.s_combo.currentText().split(" | ")[3])
-            if self.cl_miktar != 0:
-                hammadde_toplam += int(self.cl_combo.currentText().split(" | ")[2])*self.cl_miktar/int(self.cl_combo.currentText().split(" | ")[3])
-                
-            self.label21.setText(str(self.iscilik*miktar))
-            self.label22.setText(str(int(hammadde_toplam)))
-            self.label23.setText(str(int(self.iscilik*miktar + hammadde_toplam)))
+        if self.uretilebiliyor_mu():            
+            self.hesapla()
             
         else:
             self.label21.clear()
             self.label22.clear()
             self.label23.clear()           
             self.buton.setEnabled(False)
+    
+    def hesapla(self):
+        hammadde_toplam = 0
             
+        self.buton.setEnabled(True)
+        
+        self.iscilik = vti.imk
+
+        if self.c_miktar != 0 and self.c_combo.currentText() != "":
+            hammadde_toplam += int(self.c_combo.currentText().split(" | ")[2])*self.c_miktar/int(self.c_combo.currentText().split(" | ")[3])
+        if self.h_miktar != 0 and self.h_combo.currentText() != "":
+            hammadde_toplam += int(self.h_combo.currentText().split(" | ")[2])*self.h_miktar/int(self.h_combo.currentText().split(" | ")[3])
+        if self.o_miktar != 0 and self.o_combo.currentText() != "":
+            hammadde_toplam += int(self.o_combo.currentText().split(" | ")[2])*self.o_miktar/int(self.o_combo.currentText().split(" | ")[3])
+        if self.n_miktar != 0 and self.n_combo.currentText() != "":
+            hammadde_toplam += int(self.n_combo.currentText().split(" | ")[2])*self.n_miktar/int(self.n_combo.currentText().split(" | ")[3])
+        if self.s_miktar != 0 and self.s_combo.currentText() != "":
+            hammadde_toplam += int(self.s_combo.currentText().split(" | ")[2])*self.s_miktar/int(self.s_combo.currentText().split(" | ")[3])
+        if self.cl_miktar != 0 and self.cl_combo.currentText() != "":
+            hammadde_toplam += int(self.cl_combo.currentText().split(" | ")[2])*self.cl_miktar/int(self.cl_combo.currentText().split(" | ")[3])
+            
+        self.label21.setText(str(self.iscilik*self.miktar))
+        self.label22.setText(str(int(hammadde_toplam)))
+        self.label23.setText(str(int(self.iscilik*self.miktar + hammadde_toplam)))
+    
     def uretilebiliyor_mu(self):
         if self.label12.text() != "0" and len(self.c_stok) == 0 :
             return False
@@ -549,9 +565,9 @@ class pencere2(QMainWindow):
             return False
         elif self.label15.text() != "0" and len(self.n_stok) == 0 :
             return False
-        elif self.label16.text() != "0" and len(self.n_stok) == 0 :
+        elif self.label16.text() != "0" and len(self.s_stok) == 0 :
             return False
-        elif self.label17.text() != "0" and len(self.n_stok) == 0 :
+        elif self.label17.text() != "0" and len(self.cl_stok) == 0 :
             return False
         else:
             return True
@@ -561,11 +577,11 @@ class pencere2(QMainWindow):
         
         secilen_hammaddeler = [self.c_combo.currentText(),self.h_combo.currentText(),self.o_combo.currentText(),self.n_combo.currentText(),self.s_combo.currentText(),self.cl_combo.currentText()]
         
-        toplam_maliyet = self.label19.text()
+        toplam_maliyet = self.label23.text()
         
         raf_omru = int(self.line2.text())
         
-        vti.kimyasal_uret(hammadde_miktarlar,secilen_hammaddeler,raf_omru,self.iscilik,toplam_maliyet)
+        vti.kimyasal_uret(self.urun,self.miktar,hammadde_miktarlar,secilen_hammaddeler,raf_omru,self.iscilik,toplam_maliyet)
         
         self.close()
         
@@ -663,11 +679,206 @@ class pencere4(QMainWindow):
 class pencere5(QMainWindow):                           
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Kimyasal Ürün Sat")        
+        self.setWindowTitle("Kimyasal Ürün Sat")
+        self.setFixedSize(400,400)
+        
+        self.label1 = QLabel(self)
+        self.label1.setText("Müşteri : ")
+        self.label1.move(100,50)
+        
+        self.label2 = QLabel(self)
+        self.label2.setText("Tarih : "+vti.tarih[0:2]+"."+vti.tarih[2:4]+"."+vti.tarih[4:8])
+        self.label2.move(10,10)
+
+        self.label3 = QLabel(self)
+        self.label3.setText("Ürün : ")
+        self.label3.move(100,90)
+        
+        self.label4 = QLabel(self)
+        self.label4.setText("Miktar : ")
+        self.label4.move(100,135)
+        
+        self.label5 = QLabel(self)
+        self.label5.setText("Stok : ")
+        self.label5.move(100,180)
+        
+        self.label6 = QLabel(self)
+        self.label6.setText("Kar Oranı : ")
+        self.label6.move(100,210)
+        
+        self.label7 = QLabel(self)
+        self.label7.setText("Maliyet : ")
+        self.label7.move(60,240)
+        
+        self.label8 = QLabel(self)
+        self.label8.setText("Satış Fiyati : ")
+        self.label8.move(160,240)
+        
+        self.label9 = QLabel(self)
+        self.label9.setText("%")
+        self.label9.move(212,212)
+        
+        self.label10 = QLabel(self)
+        self.label10.move(110,240)
+        
+        self.label11 = QLabel(self)
+        self.label11.move(220,240)
+        
+        self.label12 = QLabel(self)
+        self.label12.setText("Siparişten düşülsün.")
+        self.label12.move(75,270)
+        
+        self.line1 = QLineEdit(self)
+        self.line1.setGeometry(150,135,75,25)
+        self.line1.textChanged.connect(self.degisti)
+    
+        self.line2 = QLineEdit(self)
+        self.line2.setGeometry(160,215,50,25)
+        self.line2.textChanged.connect(self.degisti1)
+        self.line2.setText("")
+        
+        self.musteri_combo = QComboBox(self)
+        self.musteri_combo.move(150,50)
+        musteri_list = vti.musteriler()
+        self.musteri_combo.addItems(musteri_list)
+        
+        self.urun_combo = QComboBox(self)
+        self.urun_combo.move(150,90)
+        urun_list = vti.urunler()
+        self.urun_combo.addItems(urun_list)
+        
+        self.stok_combo = QComboBox(self)
+        self.stok_combo.setGeometry(150,180,150,30)
+        
+        self.check1 = QCheckBox(self)
+        self.check1.move(60,270)
+        self.check1.setEnabled(False)
+        self.check1.clicked.connect(self.siparisten_dusulsun)
+        
+        self.siparis_combo = QComboBox(self)
+        self.siparis_combo.move(180,270)
+        self.siparis_combo.setVisible(False)
+        
+        self.buton = QPushButton(self)
+        self.buton.setText("Tamam")
+        self.buton.setEnabled(False)
+        self.buton.move(125,350)
+        self.buton.clicked.connect(self.tamam)
+        
+    
+    def degisti(self):
+        self.stok_combo.clear()
+        
+        self.miktar = self.line1.text()
+        self.urun = self.urun_combo.currentText()
+        
+        stok_list = vti.stok_urunler(self.urun,self.miktar)
+        self.stok_combo.addItems(stok_list)
+        
+        self.label10.clear()
+        
+        if len(stok_list) != 0:
+            top_maliyet = self.stok_combo.currentText().split("   ")[3]
+            top_miktar = self.stok_combo.currentText().split("   ")[2]
+            birim_maliyet = int(int(top_maliyet) / int(top_miktar))
+            
+            self.label10.setText(str(birim_maliyet*int(self.miktar)))
+        
+            self.buton.setEnabled(True)
+        
+        else:
+            self.buton.setEnabled(False)
+        
+        siparis_list = vti.siparis_bul(self.urun,self.miktar)
+        
+        if len(siparis_list) != 0 and len(stok_list) != 0:
+            self.check1.setEnabled(True)
+            self.siparis_combo.clear()
+            self.siparis_combo.addItems(siparis_list)
+        else:
+            self.check1.setChecked(False)
+            self.check1.setEnabled(False)
+            self.siparis_combo.clear()
+            self.siparis_combo.setVisible(False)
+            
+        self.line2.setText(str(vti.kar_katsayisi))
+        self.degisti1()
+        
+    def degisti1(self):
+        if self.label10.text() == "":
+            self.label11.setText("")
+            
+        else:
+            maliyet = int(self.label10.text())
+            
+            kar_orani = int(self.line2.text())
+            
+            self.label11.setText(str(int(maliyet + maliyet*kar_orani/100)))
+    
+    def siparisten_dusulsun(self):
+        if self.check1.checkState() == 2:
+
+            self.siparis_combo.setVisible(True)
+        else:
+            self.siparis_combo.setVisible(False)
+            
+    def tamam(self):
+        if self.check1.isChecked:
+            siparis_id = self.siparis_combo.currentText().split("   ")[0]
+            
+            vti.siparis_sil(siparis_id)
+        
+        stok = self.stok_combo.currentText()
+        
+        self.close()
 class pencere6(QMainWindow):                          
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Kimyasal Ürün Sipariş Et")        
+        self.setWindowTitle("Kimyasal Ürün Sipariş Et")
+        self.setFixedSize(400,300)
+        
+        self.label1 = QLabel(self)
+        self.label1.setText("Müşteri : ")
+        self.label1.move(100,50)
+    
+        self.label2 = QLabel(self)
+        self.label2.setText("Tarih : "+vti.tarih[0:2]+"."+vti.tarih[2:4]+"."+vti.tarih[4:8])
+        self.label2.move(10,10)
+
+        self.label3 = QLabel(self)
+        self.label3.setText("Ürün : ")
+        self.label3.move(100,100)
+        
+        self.label4 = QLabel(self)
+        self.label4.setText("Miktar : ")
+        self.label4.move(100,150)
+        
+        self.musteri_combo = QComboBox(self)
+        self.musteri_combo.move(150,50)
+        musteri_list = vti.musteriler()
+        self.musteri_combo.addItems(musteri_list)
+        
+        self.urun_combo = QComboBox(self)
+        self.urun_combo.move(150,100)
+        urun_list = vti.urunler()
+        self.urun_combo.addItems(urun_list)
+        
+        self.line1 = QLineEdit(self)
+        self.line1.setGeometry(150,150,75,25)
+            
+        self.buton = QPushButton(self)
+        self.buton.setText("Tamam")
+        self.buton.move(130,185)
+        self.buton.clicked.connect(self.tamam)
+        
+    def tamam(self):
+        musteri = self.musteri_combo.currentText()
+        urun = self.urun_combo.currentText()
+        miktar = self.line1.text()
+            
+        vti.siparis_ekle(musteri,urun,miktar)
+        self.close()
+        
 class pencere7(QMainWindow):                           
     def __init__(self):
         super().__init__()

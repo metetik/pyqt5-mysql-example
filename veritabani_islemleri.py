@@ -25,16 +25,18 @@ def tabloOlustur():
     cursor.execute("drop table if exists musteri")
     cursor.execute("drop table if exists ulasim")
     cursor.execute("drop table if exists siparisler")
+    cursor.execute("drop table if exists satislar")
     cursor.execute("drop view if exists tedarikci_fiyat")
     
     cursor.execute("create table tedarikci          (id int, ulke varchar(20), sehir varchar(20), firma_adi varchar(20), primary key(id))")
     cursor.execute("create table tedarikci_hammadde (id int, hammadde varchar(5),tedarikci_id int ,miktar int,uretim_tarihi varchar(10),raf_omru int,satis_fiyati int, primary key(id))")
-    cursor.execute("create table stok_hammadde      (id int,hammadde_ismi varchar(10),alis_maliyeti int,stok_miktar int, primary key(id))")
+    cursor.execute("create table stok_hammadde      (id int,hammadde_ismi varchar(10),alis_maliyeti int,stok_miktar int,uretim_tarihi varchar(10),raf_omru int, primary key(id))")
     cursor.execute("create table stok_urun          (id int,kimyasal_urun varchar(20),miktar int,uretim_tarihi varchar(10),raf_omru int,iscilik_maliyeti int, toplam_maliyet int,satis_fiyati int, primary key(id))")
-    cursor.execute("create table musteri            (musteri_id int,musteri_adi varchar(20),adres varchar(50))")
-    cursor.execute("create table formuller          (id int,formul varchar(10),bilesen1 varchar(10),bilesen2 varchar(10),bilesen3 varchar(10))")
-    cursor.execute("create table ulasim             (id int,ulke varchar(20),sehir varchar(20),uzaklik int)")
-    cursor.execute("create table siparisler         (id int,musteri_id int,siparis_tarihi varchar(10),urun varchar(10),miktar int)")
+    cursor.execute("create table musteri            (musteri_id int,musteri_adi varchar(20),adres varchar(50), primary key(musteri_id))")
+    cursor.execute("create table formuller          (id int,formul varchar(10),bilesen1 varchar(10),bilesen2 varchar(10),bilesen3 varchar(10), primary key(id))")
+    cursor.execute("create table ulasim             (id int,ulke varchar(20),sehir varchar(20),uzaklik int, primary key(id))")
+    cursor.execute("create table siparisler         (id int,musteri_id int,siparis_tarihi varchar(10),urun varchar(10),miktar int, primary key(id))")
+    cursor.execute("create table satislar           (id int,musteri_id int,tarih varchar(10),kimyasal_urun varchar(20),miktar int,satis_fiyati int, primary key(id))")
     
     cursor.execute("insert into tedarikci(id,ulke,sehir,firma_adi) values (1,'Turkiye','Ankara','ANK1')")
     cursor.execute("insert into tedarikci(id,ulke,sehir,firma_adi) values (2,'Turkiye','Eskisehir','ESK1')")
@@ -47,8 +49,7 @@ def tabloOlustur():
     cursor.execute("insert into tedarikci(id,ulke,sehir,firma_adi) values (9,'Almanya','Berlin','BER2')")
     cursor.execute("insert into tedarikci(id,ulke,sehir,firma_adi) values (10,'Bosna Hersek','Saraybosna','SB1')")
 
-    
-    
+   
     cursor.execute("insert into tedarikci_hammadde(id,hammadde,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values (1,'N',1,100,'01012019',2,8)")
     cursor.execute("insert into tedarikci_hammadde(id,hammadde,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values (2,'H',1,300,'01012019',3,9)")
     cursor.execute("insert into tedarikci_hammadde(id,hammadde,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values (3,'C',1,150,'01012019',5,10)")
@@ -107,23 +108,20 @@ def tabloOlustur():
     cursor.execute("insert into tedarikci_hammadde(id,hammadde,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values (47,'O',10,5,'01012019',4,3)")
     cursor.execute("insert into tedarikci_hammadde(id,hammadde,tedarikci_id,miktar,uretim_tarihi,raf_omru,satis_fiyati) values (48,'S',10,10,'01012019',6,4)")
     
-    
-    
-    
-    
-    cursor.execute("insert into stok_hammadde(id,hammadde_ismi,alis_maliyeti,stok_miktar) values (1,'C',160,10)")
-    cursor.execute("insert into stok_hammadde(id,hammadde_ismi,alis_maliyeti,stok_miktar) values (2,'H',140,20)")
-    cursor.execute("insert into stok_hammadde(id,hammadde_ismi,alis_maliyeti,stok_miktar) values (3,'O',320,15)")
+
+    cursor.execute("insert into stok_hammadde(id,hammadde_ismi,alis_maliyeti,stok_miktar,uretim_tarihi,raf_omru) values (1,'C',160,10,'01012019',7)")
+    cursor.execute("insert into stok_hammadde(id,hammadde_ismi,alis_maliyeti,stok_miktar,uretim_tarihi,raf_omru) values (2,'H',140,20,'01012019',8)")
+    cursor.execute("insert into stok_hammadde(id,hammadde_ismi,alis_maliyeti,stok_miktar,uretim_tarihi,raf_omru) values (3,'O',320,15,'01012019',6)")
     
     cursor.execute("insert into stok_urun(id,kimyasal_urun,miktar,uretim_tarihi,raf_omru,iscilik_maliyeti,toplam_maliyet,satis_fiyati) values (1,'CO2',10,'01012019',3,1,400,400)")
     cursor.execute("insert into stok_urun(id,kimyasal_urun,miktar,uretim_tarihi,raf_omru,iscilik_maliyeti,toplam_maliyet,satis_fiyati) values (2,'H2O',15,'01012019',4,1,600,750)")
     cursor.execute("insert into stok_urun(id,kimyasal_urun,miktar,uretim_tarihi,raf_omru,iscilik_maliyeti,toplam_maliyet,satis_fiyati) values (3,'NH3',20,'01012019',2,1,500,625)")
     
-    cursor.execute("insert into formuller(formul,bilesen1,bilesen2,bilesen3) values ('NH3','N','3H',null)")
-    cursor.execute("insert into formuller(formul,bilesen1,bilesen2,bilesen3) values ('CO2','C','2O',null)")
-    cursor.execute("insert into formuller(formul,bilesen1,bilesen2,bilesen3) values ('SO2','S','2O',null)")
-    cursor.execute("insert into formuller(formul,bilesen1,bilesen2,bilesen3) values ('C6H12O6','6C','12H','6O')")
-    cursor.execute("insert into formuller(formul,bilesen1,bilesen2,bilesen3) values ('HCl','H','Cl',null)")
+    cursor.execute("insert into formuller(id,formul,bilesen1,bilesen2,bilesen3) values (1,'NH3','N','3H',null)")
+    cursor.execute("insert into formuller(id,formul,bilesen1,bilesen2,bilesen3) values (2,'CO2','C','2O',null)")
+    cursor.execute("insert into formuller(id,formul,bilesen1,bilesen2,bilesen3) values (3,'SO2','S','2O',null)")
+    cursor.execute("insert into formuller(id,formul,bilesen1,bilesen2,bilesen3) values (4,'C6H12O6','6C','12H','6O')")
+    cursor.execute("insert into formuller(id,formul,bilesen1,bilesen2,bilesen3) values (5,'HCl','H','Cl',null)")
     
     cursor.execute("insert into musteri(musteri_id,musteri_adi,adres) values (1,'musteri1','Japonya,Tokyo')")
     cursor.execute("insert into musteri(musteri_id,musteri_adi,adres) values (2,'musteri2','Guney Afrika,Cape Town')")
@@ -186,7 +184,6 @@ def getMusteriTablo():
 
     return musteri_tablo
 
-
 def getFormulTablo():
     cursor.execute("select * from formuller")
     formul_tablo = cursor.fetchall()
@@ -205,23 +202,55 @@ def getSiparisTablo():
 
     return siparis_tablo
 
-
+def getSatisTablo():
+    cursor.execute("select * from satislar")
+    satislar_tablo = cursor.fetchall()
+    
+    return satislar_tablo
+    
 #############################################
 
-def yeni_tedarikci(tedarikci_id,tedarikci_firma_adi,tedarikci_ulke,tedarikci_sehir):
-    sorgu = "insert into tedarikci(id,ulke,sehir,firma_adi) values ("+tedarikci_id+",'"+tedarikci_ulke+"','"+tedarikci_sehir+"','"+tedarikci_firma_adi+"')"
+def yeni_tedarikci(tedarikci_firma_adi,tedarikci_ulke,tedarikci_sehir):
+    sorgu1 = "select max(id) from tedarikci"
+    
+    cursor.execute(sorgu1)
+
+    son_id = cursor.fetchall()[0][0]
+    
+    if son_id == None:
+        son_id = 0
+    
+    sorgu = "insert into tedarikci(id,ulke,sehir,firma_adi) values ("+str(son_id+1)+",'"+tedarikci_ulke+"','"+tedarikci_sehir+"','"+tedarikci_firma_adi+"')"
     
     cursor.execute(sorgu)
 
-def yeni_musteri(musteri_id,musteri_adi,musteri_adres):
-    sorgu = "insert into musteri(musteri_id,musteri_adi,adres) values ("+musteri_id+",'"+musteri_adi+"','"+musteri_adres+"')"
+def yeni_musteri(musteri_adi,musteri_adres):
+    sorgu1 = "select max(musteri_id) from musteri"
+    
+    cursor.execute(sorgu1)
+
+    son_id = cursor.fetchall()[0][0]
+    
+    if son_id == None:
+        son_id = 0
+    
+    sorgu = "insert into musteri(musteri_id,musteri_adi,adres) values ("+str(son_id+1)+",'"+musteri_adi+"','"+musteri_adres+"')"
 
     cursor.execute(sorgu)
 
 def formul_ekle(formul,bilesen1,bilesen2,bilesen3):
-    sorgu = "insert into formuller(formul,bilesen1,bilesen2,bilesen3) values ('"+formul+"','"+bilesen1+"','"+bilesen2+"','"+bilesen3+"')"
+    sorgu1 = "select max(id) from formuller"
+    
+    cursor.execute(sorgu1)
 
-    cursor.execute(sorgu)
+    son_id = cursor.fetchall()[0][0]
+    
+    if son_id == None:
+        son_id = 0
+    
+    sorgu2 = "insert into formuller(id,formul,bilesen1,bilesen2,bilesen3) values ("+str(son_id+1)+",'"+formul+"','"+bilesen1+"','"+bilesen2+"','"+bilesen3+"')"
+
+    cursor.execute(sorgu2)
     
 def tedarikci_listele(hammadde,miktar):
     sorgu1 = "drop view if exists tedarikci_fiyat"
@@ -246,12 +275,7 @@ def tedarikci_listele(hammadde,miktar):
     
     for j in sonuc:
         tedarikci_liste.append(j[0]+" "*15+str(j[1])+" "*25+str(j[2]))
-        
-#        print(tedarikci_liste)
-        
-        print(j)
-
-    
+   
     return tedarikci_liste
 
 def hammadde_satisi(index,miktar,hammadde):
@@ -271,19 +295,24 @@ def hammadde_satisi(index,miktar,hammadde):
     firma_id = cursor.fetchall()[0][0]
     print("firma id : "+str(firma_id))
     
-    sorgu3 = "select miktar from tedarikci_hammadde where tedarikci_id = "+str(firma_id)+" and hammadde = '"+hammadde+"'"
+    sorgu3 = "select miktar,uretim_tarihi,raf_omru from tedarikci_hammadde where tedarikci_id = "+str(firma_id)+" and hammadde = '"+hammadde+"'"
     cursor.execute(sorgu3)
-    tedarikci_miktar = cursor.fetchall()[0][0]
+    tedarikci_miktar,uretim_tarihi,raf_omru = cursor.fetchall()[0]
+    
     print("tedarikci miktar : "+str(tedarikci_miktar))
     
     sorgu4 = "select max(id) from stok_hammadde"
     cursor.execute(sorgu4)
     son_id = cursor.fetchall()[0][0]
     
+    if son_id == None:
+        son_id = 0
+    
     sorgu5 = "update tedarikci_hammadde set miktar = "+str(int(tedarikci_miktar)-int(miktar))+" where tedarikci_id = "+str(firma_id)+" and hammadde = '"+hammadde+"'"
     cursor.execute(sorgu5)
     
-    sorgu6 = "insert into stok_hammadde(id,hammadde_ismi,alis_maliyeti,stok_miktar) values ("+str(int(son_id)+1)+",'"+hammadde+"',"+str(fiyat)+","+miktar+")" 
+    sorgu6 = "insert into stok_hammadde(id,hammadde_ismi,alis_maliyeti,stok_miktar,uretim_tarihi,raf_omru)\
+    values ("+str(int(son_id)+1)+",'"+hammadde+"',"+str(fiyat)+","+miktar+",'"+uretim_tarihi+"',"+str(raf_omru)+")" 
     cursor.execute(sorgu6)
     
 def kimyasal_urun_liste():
@@ -452,7 +481,7 @@ def cl_stok_liste(n_miktar):
     
     return sonuc1
 
-def kimyasal_uret(urun,miktar,hammadde_miktarlar,secilen_hammaddeler,raf_omru,iscilik_maliyeti,toplam_maliyet):
+def kimyasal_uret(urun,miktar,hammadde_miktarlar,secilen_hammaddeler,raf_omru,iscilik_maliyeti,toplam_maliyet,kar_katsayi):
     c_miktar,h_miktar,o_miktar,n_miktar,s_miktar,cl_miktar = hammadde_miktarlar
     
     print(secilen_hammaddeler)
@@ -535,19 +564,20 @@ def kimyasal_uret(urun,miktar,hammadde_miktarlar,secilen_hammaddeler,raf_omru,is
         
         cursor.execute(sorgu2)
     
-    sorgu1 = "select max(id) from stok_hammadde"
+    sorgu1 = "select max(id) from stok_urun"
     
     cursor.execute(sorgu1)
 
     son_id = cursor.fetchall()[0][0]
     
+    if son_id == None:
+        son_id = 0
+    
     sorgu2 = "insert into stok_urun(id,kimyasal_urun,miktar,uretim_tarihi,raf_omru,iscilik_maliyeti,toplam_maliyet,satis_fiyati) values \
-    ("+str(son_id+1)+",'"+urun+"',"+str(miktar)+",'"+tarih+"',"+str(raf_omru)+","+str(iscilik_maliyeti)+","+toplam_maliyet+","+str(int(toplam_maliyet)+int(toplam_maliyet)*kar_katsayisi/100)+")"
+    ("+str(son_id+1)+",'"+urun+"',"+str(miktar)+",'"+tarih+"',"+str(raf_omru)+","+str(iscilik_maliyeti)+","+toplam_maliyet+","+str(int(toplam_maliyet)+int(toplam_maliyet)*kar_katsayi/100)+")"
     
     cursor.execute(sorgu2)
     
-    #(id int,kimyasal_urun varchar(20),miktar int,uretim_tarihi varchar(10),raf_omru int,iscilik_maliyeti int, toplam_maliyet int,satis_fiyati int, primary key(id))
-
 def musteriler():
     sorgu = "select musteri_adi from musteri"
     
@@ -613,10 +643,16 @@ def stok_urunler(urun,miktar):
    
     return sonuc1
 
-def siparis_bul(urun,miktar):  
-    sorgu = "select * from siparisler where urun = '"+urun+"' and miktar = "+miktar
+def siparis_bul(musteri,urun,miktar):  
+    sorgu = "select musteri_id from musteri where musteri_adi = '"+musteri+"'"
     
     cursor.execute(sorgu)
+    
+    musteri_id = cursor.fetchall()[0][0]
+    
+    sorgu1 = "select * from siparisler where urun = '"+urun+"' and miktar = "+miktar+" and musteri_id = "+str(musteri_id)
+    
+    cursor.execute(sorgu1)
     
     sonuc = cursor.fetchall()
     
@@ -632,5 +668,110 @@ def siparis_bul(urun,miktar):
 def siparis_sil(siparis_id):
     sorgu = "delete from siparisler where id = "+str(siparis_id)
     
+    print("sid : ")
+    
+    print(siparis_id)
+    cursor.execute(sorgu)
+
+def satis_ekle(musteri_adi,urun,miktar,fiyat):
+    sorgu = "select max(id) from satislar"
+    
     cursor.execute(sorgu)
     
+    son_id = cursor.fetchall()[0][0]
+    
+    if son_id == None:
+        son_id = 0
+   
+    sorgu1 = "select musteri_id from musteri where musteri_adi = '"+musteri_adi+"'"
+    
+    cursor.execute(sorgu1)
+    
+    musteri_id = cursor.fetchall()[0][0]
+    
+    sorgu = "insert into satislar(id, musteri_id, tarih, kimyasal_urun, miktar, satis_fiyati)\
+    values("+str(son_id+1)+","+str(musteri_id)+",'"+tarih+"','"+urun+"',"+str(miktar)+","+str(fiyat)+")"
+    
+    cursor.execute(sorgu)
+    
+def urun_stok_dus(stok_id,miktar):
+    
+    sorgu = "select miktar,toplam_maliyet,satis_fiyati from stok_urun where id = "+str(stok_id)
+    
+    cursor.execute(sorgu)
+    
+    sonuc = cursor.fetchall()
+    
+    stok_miktar,toplam_maliyet,satis_maliyeti = sonuc[0]
+    
+    if stok_miktar == int(miktar):
+        print("girdi")
+        
+        sorgu1 = "delete from stok_urun where id = "+str(stok_id)
+            
+        cursor.execute(sorgu1)
+        
+    else:
+        oran = (stok_miktar - int(miktar))/stok_miktar
+        
+        sorgu1 = "update stok_urun set miktar = "+str(stok_miktar - int(miktar))+", toplam_maliyet = "+str(int(toplam_maliyet*oran))+",\
+        satis_fiyati = "+str(int(satis_maliyeti*oran))+" where id = "+str(stok_id)
+        
+        cursor.execute(sorgu1)
+
+def tarih_kontrol():
+    sorgu1 = "select id,uretim_tarihi,raf_omru from tedarikci_hammadde"
+    
+    cursor.execute(sorgu1)
+    
+    sonuc1 = cursor.fetchall()
+    
+    for i in sonuc1:
+        uretim_tarihi = i[1]
+        
+        ay = int(uretim_tarihi[2:4])
+        yil = int(uretim_tarihi[4:8])
+        bu_ay = int(tarih[2:4])
+        bu_yil = int(tarih[4:8])
+        ay_fark = (bu_yil - yil)*12 + bu_ay - ay
+        
+        if ay_fark >= i[2]:
+            cursor.execute("delete from tedarikci_hammadde where id = "+str(i[0]))
+        
+    sorgu2 = "select id,uretim_tarihi,raf_omru from stok_hammadde"
+    
+    cursor.execute(sorgu2)
+    
+    sonuc2 = cursor.fetchall()
+    
+    for i in sonuc2:
+        uretim_tarihi = i[1]
+        
+        ay = int(uretim_tarihi[2:4])
+        yil = int(uretim_tarihi[4:8])
+        bu_ay = int(tarih[2:4])
+        bu_yil = int(tarih[4:8])
+        ay_fark = (bu_yil - yil)*12 + bu_ay - ay
+        
+        if ay_fark >= i[2]:
+            cursor.execute("delete from stok_hammadde where id = "+str(i[0]))
+
+    sorgu3 = "select id,uretim_tarihi,raf_omru from stok_urun"
+    
+    cursor.execute(sorgu3)
+    
+    sonuc3 = cursor.fetchall()
+    
+    for i in sonuc3:
+        uretim_tarihi = i[1]
+        
+        ay = int(uretim_tarihi[2:4])
+        yil = int(uretim_tarihi[4:8])
+        bu_ay = int(tarih[2:4])
+        bu_yil = int(tarih[4:8])
+        ay_fark = (bu_yil - yil)*12 + bu_ay - ay
+        
+        if ay_fark >= i[2]:
+            cursor.execute("delete from stok_urun where id = "+str(i[0]))
+            
+tarih_kontrol()

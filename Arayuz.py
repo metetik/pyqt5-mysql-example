@@ -8,8 +8,8 @@ class App(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Ana Ekran")
-        self.table_widget = AnaEkran(self)
-        self.setCentralWidget(self.table_widget)
+        self.main_widget = AnaEkran(self)
+        self.setCentralWidget(self.main_widget)
         self.setGeometry(200,200,600,450)
         self.show()
     
@@ -23,7 +23,7 @@ class AnaEkran(QWidget):
         self.tab1 = QWidget()
         self.tab2 = QWidget()
         self.tab3 = QWidget()
-
+        
         # Add tabs
         self.tabs.addTab(self.tab1,"Tablolar")
         self.tabs.addTab(self.tab2,"Tedarikçi <=> Üretici")
@@ -54,6 +54,7 @@ class AnaEkran(QWidget):
         self.tab2.layout = QVBoxLayout(self)
         self.tab2_butonlar1 = QHBoxLayout(self)
         self.tab2_butonlar2 = QHBoxLayout(self)
+        self.tab2_butonlar3 = QHBoxLayout(self)
         
         self.pushButton1 = QPushButton("Hammadde Satın Al")
         self.tab2_butonlar1.addWidget(self.pushButton1)
@@ -69,38 +70,50 @@ class AnaEkran(QWidget):
         self.tab2_butonlar2.addWidget(self.pushButton4)
         self.pushButton4.clicked.connect(self.pencere4_ac)
         
-        self.bilgi_kutusu = QLabel("Bilgi kutusu1")
-        
+        self.pushButton5 = QPushButton("Kaydet ve Çık")
+        self.tab2_butonlar3.addWidget(self.pushButton5)
+        self.pushButton5.clicked.connect(self.kaydet)  
+        self.pushButton6 = QPushButton("Kaydetmeden Çık")
+        self.tab2_butonlar3.addWidget(self.pushButton6)
+        self.pushButton6.clicked.connect(self.kaydetme)  
         
         self.tab2.layout.addLayout(self.tab2_butonlar1)
         self.tab2.layout.addLayout(self.tab2_butonlar2)
-        self.tab2.layout.addWidget(self.bilgi_kutusu)
+        self.tab2.layout.addLayout(self.tab2_butonlar3)
         self.tab2.setLayout(self.tab2.layout)
         
         # tab3
         self.tab3.layout = QVBoxLayout(self)
         self.tab3_butonlar1 = QHBoxLayout(self)
         self.tab3_butonlar2 = QHBoxLayout(self)
+        self.tab3_butonlar3 = QHBoxLayout(self)
         
-        self.pushButton5 = QPushButton("Kimyasal Ürün Sat")
-        self.tab3_butonlar1.addWidget(self.pushButton5)
-        self.pushButton5.clicked.connect(self.pencere5_ac)
-        self.pushButton6 = QPushButton("Kimyasal Ürün Sipariş Et")
-        self.tab3_butonlar1.addWidget(self.pushButton6)
-        self.pushButton6.clicked.connect(self.pencere6_ac)
+        self.pushButton7 = QPushButton("Kimyasal Ürün Sat")
+        self.tab3_butonlar1.addWidget(self.pushButton7)
+        self.pushButton7.clicked.connect(self.pencere5_ac)
+        self.pushButton8 = QPushButton("Kimyasal Ürün Sipariş Et")
+        self.tab3_butonlar1.addWidget(self.pushButton8)
+        self.pushButton8.clicked.connect(self.pencere6_ac)
         
-        self.pushButton7 = QPushButton("Üretici Bilgileri")
-        self.tab3_butonlar2.addWidget(self.pushButton7)
-        self.pushButton7.clicked.connect(self.pencere7_ac)
-        self.pushButton8 = QPushButton("Yeni Müşteri")
-        self.tab3_butonlar2.addWidget(self.pushButton8)
-        self.pushButton8.clicked.connect(self.pencere8_ac)
         
-        self.bilgi_kutusu = QLabel("Bilgi kutusu2")
+        self.pushButton9 = QPushButton("Üretici Bilgileri")
+        self.tab3_butonlar2.addWidget(self.pushButton9)
+        self.pushButton9.clicked.connect(self.pencere7_ac)
+        self.pushButton10 = QPushButton("Yeni Müşteri")
+        self.tab3_butonlar2.addWidget(self.pushButton10)
+        self.pushButton10.clicked.connect(self.pencere8_ac)
+        
+        self.pushButton11 = QPushButton("Kaydet ve Çık")
+        self.tab3_butonlar3.addWidget(self.pushButton11)
+        self.pushButton11.clicked.connect(self.kaydet) 
+        self.pushButton12 = QPushButton("Kaydetmeden Çık")
+        self.tab3_butonlar3.addWidget(self.pushButton12)
+        self.pushButton12.clicked.connect(self.kaydetme)
+        
         
         self.tab3.layout.addLayout(self.tab3_butonlar1)
         self.tab3.layout.addLayout(self.tab3_butonlar2)
-        self.tab3.layout.addWidget(self.bilgi_kutusu)
+        self.tab3.layout.addLayout(self.tab3_butonlar3)
         self.tab3.setLayout(self.tab3.layout)
         
         
@@ -132,7 +145,12 @@ class AnaEkran(QWidget):
     def pencere8_ac(self):
         self.p8 = pencere8()
         self.p8.show()
-        
+    def kaydet(self):
+        vti.kaydet_cik()
+        sys.exit(0)
+    def kaydetme(self):
+        vti.kaydetme_cik()
+        sys.exit(0)
         
     def tablolar(self,i):
         if i == 0:
@@ -297,6 +315,9 @@ class AnaEkran(QWidget):
                 self.tableWidget.setItem(satirIndex,5,QTableWidgetItem(str(satir[5])))
                 satirIndex += 1         
             self.tab1.layout.addWidget(self.tableWidget)
+        
+
+
 
 class pencere1(QMainWindow):                           
     def __init__(self):
@@ -349,8 +370,6 @@ class pencere1(QMainWindow):
     
     def tiklandi2(self):
         index = self.tedarikci_menu.currentIndex()
-
-        print(index)
         
         vti.hammadde_satisi(index,self.miktar,self.hammadde)
         
@@ -946,7 +965,7 @@ class pencere7(QMainWindow):
         self.label7.move(10,200)
         
         self.label8 = QLabel(self)
-        self.label8.setText("Kâr Katsayısı : ")
+        self.label8.setText("Kâr Oranı : ")
         self.label8.move(10,230)
         
         self.line1 = QLineEdit(self)
